@@ -19,6 +19,7 @@ public abstract class Pet implements Animal {
     public Pet(String name, int age) {
         this.name = name;
         this.age = age;
+        this.petOwner = null;
     }
 
 

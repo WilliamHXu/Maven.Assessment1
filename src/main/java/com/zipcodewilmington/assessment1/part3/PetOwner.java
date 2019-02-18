@@ -1,5 +1,8 @@
 package com.zipcodewilmington.assessment1.part3;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by leon on 2/16/18.
  */
@@ -13,14 +16,18 @@ public class PetOwner {
 
     public PetOwner(String name, Pet... pets) {
         this.name = name;
-        this.pets = pets;
-        if (pets != null) {
+        Pet[] tempPets = pets;
+        try {
             for (Pet pet : pets) {
                 pet.setOwner(this);
             }
         }
+        catch (Exception e){}
+        this.pets = tempPets;
 
     }
+
+
 
     /**
      * @param pet pet to be added to the composite collection of Pets
@@ -39,15 +46,26 @@ public class PetOwner {
      * @param pet pet to be removed from the composite collection Pets
      */
     public void removePet(Pet pet) {
-        Pet[] newPetArray = new Pet[pets.length - 1];
-        if (newPetArray.length == 0) {this.pets = null;}
-        else {
-            for (int i = 0, j = 0; i < pets.length; i++) {
-                if (!pets[i].equals(pet)) {
-                    newPetArray[j++] = pets[i];
-                }
+        try {
+            Pet[] newPetArray = new Pet[pets.length - 1];
+            if (newPetArray.length == 0) {
+                this.pets = new Pet[0];
             }
-            this.pets = newPetArray;
+            else {
+                boolean removed = false;
+                for (int i = 0, j = 0; i < pets.length; i++) {
+                    if (!pets[i].equals(pet) || removed) {
+                        newPetArray[j++] = pets[i];
+                    }
+                    else {
+                        removed = true;
+                    }
+                }
+                this.pets = newPetArray;
+            }
+        }
+        catch (Exception e){
+
         }
     }
 
@@ -127,6 +145,14 @@ public class PetOwner {
      * @return array representation of animals owned by this PetOwner
      */
     public Pet[] getPets() {
-        return pets;
+        if(getNumberOfPets() != 0) {
+
+            System.out.println("In try statement");
+            return pets;
+        }
+        else{
+            Pet[] noPets = new Pet[1];
+            return noPets;
+        }
     }
 }
